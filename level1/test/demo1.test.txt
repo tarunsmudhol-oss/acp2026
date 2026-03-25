@@ -13,7 +13,7 @@ EOF'
 
 echo $output >&3
 
-[[ "$output" = *"Maximum value = 30.10"* ]]
+[[ "$output" = *"The Maxium Index is = 30.10"* ]]
 }
 
 @test "test 2" {
@@ -28,7 +28,7 @@ echo $output >&3
 
 echo $output >&3
 
-[[ "$output" = *"Maximum value = -1.10"* ]]
+[[ "$output" = *"The Maxium Index is = -1.10"* ]]
 }
 
 @test "test 3" {
@@ -45,6 +45,6 @@ EOF'
 
 echo $output >&3
 
-[[ "$output" = *"Maximum value = 9.90"* ]]
+[[ "$output" = *"The Maxium Index is = 9.90"* ]]
 }
 
