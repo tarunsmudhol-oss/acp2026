@@ -1,0 +1,171 @@
+#!/usr/bin/env bats
+
+@test "test 1 - rectangle 1 is largest" {
+run bash -c './demo2.exe <<EOF
+Rect1
+10
+5
+Rect2
+4
+5
+Rect3
+3
+6
+EOF'
+
+echo "$output" >&3
+[[ "$output" == *"Largest Rectangle: Rect1"* ]]
+}
+
+@test "test 2 - rectangle 2 is largest" {
+run bash -c './demo2.exe <<EOF
+R1
+2
+3
+R2
+10
+2
+R3
+4
+4
+EOF'
+
+echo "$output" >&3
+[[ "$output" == *"Largest Rectangle: R2"* ]]
+}
+
+@test "test 3 - rectangle 3 is largest" {
+run bash -c './demo2.exe <<EOF
+A
+3
+3
+B
+2
+5
+C
+6
+2
+EOF'
+
+echo "$output" >&3
+[[ "$output" == *"Largest Rectangle: C"* ]]
+}
+
+@test "test 4 - equal largest areas" {
+run bash -c './demo2.exe <<EOF
+R1
+4
+5
+R2
+2
+10
+R3
+3
+6
+EOF'
+
+echo "$output" >&3
+[[ "$output" == *"Two or more rectangles have equal largest area."* ]]
+}
+
+@test "test 5 - all rectangles equal" {
+run bash -c './demo2.exe <<EOF
+R1
+5
+5
+R2
+5
+5
+R3
+5
+5
+EOF'
+
+echo "$output" >&3
+[[ "$output" == *"Two or more rectangles have equal largest area."* ]]
+}
+
+@test "test 6 - zero area rectangle" {
+run bash -c './demo2.exe <<EOF
+R1
+0
+5
+R2
+4
+5
+R3
+3
+3
+EOF'
+
+echo "$output" >&3
+[[ "$output" == *"Largest Rectangle: R2"* ]]
+}
+
+@test "test 7 - negative values" {
+run bash -c './demo2.exe <<EOF
+R1
+-5
+4
+R2
+3
+3
+R3
+2
+2
+EOF'
+
+echo "$output" >&3
+[[ "$output" == *"Largest Rectangle: R2"* ]]
+}
+
+@test "test 8 - large values" {
+run bash -c './demo2.exe <<EOF
+R1
+100
+200
+R2
+150
+100
+R3
+50
+300
+EOF'
+
+echo "$output" >&3
+[[ "$output" == *"Largest Rectangle: R1"* ]]
+}
+
+@test "test 9 - decimal inputs" {
+run bash -c './demo2.exe <<EOF
+R1
+5.5
+5
+R2
+6
+4.2
+R3
+7
+3
+EOF'
+
+echo "$output" >&3
+[[ "$output" == *"Largest Rectangle: R1"* ]]
+}
+
+@test "test 10 - smallest values tie" {
+run bash -c './demo2.exe <<EOF
+R1
+1
+1
+R2
+2
+1
+R3
+1
+2
+EOF'
+
+echo "$output" >&3
+[[ "$output" == *"Two or more rectangles have equal largest area."* ]]
+}
