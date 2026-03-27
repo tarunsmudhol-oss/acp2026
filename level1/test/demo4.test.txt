@@ -1,0 +1,226 @@
+#!/usr/bin/env bats
+
+@test "test 1 - destination found (single match)" {
+run bash -c './demo4.exe <<EOF
+101
+Delhi
+50
+102
+Mumbai
+40
+103
+Chennai
+30
+104
+Kolkata
+20
+Mumbai
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Flight Number: 102"* ]]
+}
+
+@test "test 2 - destination not found" {
+run bash -c './demo4.exe <<EOF
+101
+Delhi
+50
+102
+Mumbai
+40
+103
+Chennai
+30
+104
+Kolkata
+20
+Hyderabad
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"No flights available to Hyderabad"* ]]
+}
+
+@test "test 3 - multiple flights same destination" {
+run bash -c './demo4.exe <<EOF
+101
+Delhi
+50
+102
+Mumbai
+40
+103
+Mumbai
+25
+104
+Kolkata
+20
+Mumbai
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Flight Number: 102"* ]]
+[[ "$output" = *"Flight Number: 103"* ]]
+}
+
+@test "test 4 - case sensitivity check" {
+run bash -c './demo4.exe <<EOF
+101
+Delhi
+50
+102
+Mumbai
+40
+103
+Chennai
+30
+104
+Kolkata
+20
+mumbai
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"No flights available to mumbai"* ]]
+}
+
+@test "test 5 - first flight match" {
+run bash -c './demo4.exe <<EOF
+101
+Delhi
+50
+102
+Mumbai
+40
+103
+Chennai
+30
+104
+Kolkata
+20
+Delhi
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Flight Number: 101"* ]]
+}
+
+@test "test 6 - last flight match" {
+run bash -c './demo4.exe <<EOF
+101
+Delhi
+50
+102
+Mumbai
+40
+103
+Chennai
+30
+104
+Kolkata
+20
+Kolkata
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Flight Number: 104"* ]]
+}
+
+@test "test 7 - zero available seats" {
+run bash -c './demo4.exe <<EOF
+101
+Delhi
+0
+102
+Mumbai
+40
+103
+Chennai
+30
+104
+Kolkata
+20
+Delhi
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Flight Number: 101"* ]]
+[[ "$output" = *"Available Seats: 0"* ]]
+}
+
+@test "test 8 - negative seats (edge case)" {
+run bash -c './demo4.exe <<EOF
+101
+Delhi
+-5
+102
+Mumbai
+40
+103
+Chennai
+30
+104
+Kolkata
+20
+Delhi
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Flight Number: 101"* ]]
+}
+
+@test "test 9 - all flights same destination" {
+run bash -c './demo4.exe <<EOF
+101
+Goa
+10
+102
+Goa
+20
+103
+Goa
+30
+104
+Goa
+40
+Goa
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Flight Number: 101"* ]]
+[[ "$output" = *"Flight Number: 102"* ]]
+[[ "$output" = *"Flight Number: 103"* ]]
+[[ "$output" = *"Flight Number: 104"* ]]
+}
+
+@test "test 10 - numeric-like destination" {
+run bash -c './demo4.exe <<EOF
+101
+D1
+10
+102
+D2
+20
+103
+D3
+30
+104
+D4
+40
+D3
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Flight Number: 103"* ]]
+}
