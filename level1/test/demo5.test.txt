@@ -1,0 +1,171 @@
+#!/usr/bin/env bats
+
+@test "test 1 - swap arrays with 3 elements" {
+run bash -c './demo5.exe <<EOF
+3
+1 2 3
+4 5 6
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Before swapping:"* ]]
+[[ "$output" = *"Array 1: 1 2 3"* ]]
+[[ "$output" = *"Array 2: 4 5 6"* ]]
+[[ "$output" = *"After swapping:"* ]]
+[[ "$output" = *"Array 1: 4 5 6"* ]]
+[[ "$output" = *"Array 2: 1 2 3"* ]]
+}
+
+@test "test 2 - single element swap" {
+run bash -c './demo5.exe <<EOF
+1
+10
+20
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Before swapping:"* ]]
+[[ "$output" = *"Array 1: 10"* ]]
+[[ "$output" = *"Array 2: 20"* ]]
+[[ "$output" = *"After swapping:"* ]]
+[[ "$output" = *"Array 1: 20"* ]]
+[[ "$output" = *"Array 2: 10"* ]]
+}
+
+@test "test 3 - same values" {
+run bash -c './demo5.exe <<EOF
+3
+1 1 1
+1 1 1
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Before swapping:"* ]]
+[[ "$output" = *"Array 1: 1 1 1"* ]]
+[[ "$output" = *"Array 2: 1 1 1"* ]]
+[[ "$output" = *"After swapping:"* ]]
+[[ "$output" = *"Array 1: 1 1 1"* ]]
+[[ "$output" = *"Array 2: 1 1 1"* ]]
+}
+
+@test "test 4 - negative numbers" {
+run bash -c './demo5.exe <<EOF
+3
+-1 -2 -3
+4 5 6
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Before swapping:"* ]]
+[[ "$output" = *"Array 1: -1 -2 -3"* ]]
+[[ "$output" = *"Array 2: 4 5 6"* ]]
+[[ "$output" = *"After swapping:"* ]]
+[[ "$output" = *"Array 1: 4 5 6"* ]]
+[[ "$output" = *"Array 2: -1 -2 -3"* ]]
+}
+
+@test "test 5 - zero values" {
+run bash -c './demo5.exe <<EOF
+3
+0 0 0
+1 2 3
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Before swapping:"* ]]
+[[ "$output" = *"Array 1: 0 0 0"* ]]
+[[ "$output" = *"Array 2: 1 2 3"* ]]
+[[ "$output" = *"After swapping:"* ]]
+[[ "$output" = *"Array 1: 1 2 3"* ]]
+[[ "$output" = *"Array 2: 0 0 0"* ]]
+}
+
+@test "test 6 - larger array" {
+run bash -c './demo5.exe <<EOF
+5
+1 2 3 4 5
+6 7 8 9 10
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Before swapping:"* ]]
+[[ "$output" = *"Array 1: 1 2 3 4 5"* ]]
+[[ "$output" = *"Array 2: 6 7 8 9 10"* ]]
+[[ "$output" = *"After swapping:"* ]]
+[[ "$output" = *"Array 1: 6 7 8 9 10"* ]]
+[[ "$output" = *"Array 2: 1 2 3 4 5"* ]]
+}
+
+@test "test 7 - mixed positive and negative" {
+run bash -c './demo5.exe <<EOF
+4
+-1 2 -3 4
+5 -6 7 -8
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Before swapping:"* ]]
+[[ "$output" = *"Array 1: -1 2 -3 4"* ]]
+[[ "$output" = *"Array 2: 5 -6 7 -8"* ]]
+[[ "$output" = *"After swapping:"* ]]
+[[ "$output" = *"Array 1: 5 -6 7 -8"* ]]
+[[ "$output" = *"Array 2: -1 2 -3 4"* ]]
+}
+
+@test "test 8 - all zeros in both arrays" {
+run bash -c './demo5.exe <<EOF
+3
+0 0 0
+0 0 0
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Before swapping:"* ]]
+[[ "$output" = *"Array 1: 0 0 0"* ]]
+[[ "$output" = *"Array 2: 0 0 0"* ]]
+[[ "$output" = *"After swapping:"* ]]
+[[ "$output" = *"Array 1: 0 0 0"* ]]
+[[ "$output" = *"Array 2: 0 0 0"* ]]
+}
+
+@test "test 9 - identical arrays" {
+run bash -c './demo5.exe <<EOF
+4
+9 8 7 6
+9 8 7 6
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Before swapping:"* ]]
+[[ "$output" = *"Array 1: 9 8 7 6"* ]]
+[[ "$output" = *"Array 2: 9 8 7 6"* ]]
+[[ "$output" = *"After swapping:"* ]]
+[[ "$output" = *"Array 1: 9 8 7 6"* ]]
+[[ "$output" = *"Array 2: 9 8 7 6"* ]]
+}
+
+@test "test 10 - descending vs ascending" {
+run bash -c './demo5.exe <<EOF
+5
+5 4 3 2 1
+1 2 3 4 5
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Before swapping:"* ]]
+[[ "$output" = *"Array 1: 5 4 3 2 1"* ]]
+[[ "$output" = *"Array 2: 1 2 3 4 5"* ]]
+[[ "$output" = *"After swapping:"* ]]
+[[ "$output" = *"Array 1: 1 2 3 4 5"* ]]
+[[ "$output" = *"Array 2: 5 4 3 2 1"* ]]
+}
