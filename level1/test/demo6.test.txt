@@ -1,0 +1,123 @@
+#!/usr/bin/env bats
+
+@test "test 1 - normal input (5 elements)" {
+run bash -c './demo6.exe <<EOF
+5
+1 2 3 4 5
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Enter 5 elements:"* ]]
+[[ "$output" = *"1 2 3 4 5"* ]]
+[[ "$output" = *"Memory successfully freed and pointer set to NULL."* ]]
+}
+
+@test "test 2 - single element" {
+run bash -c './demo6.exe <<EOF
+1
+10
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Enter 1 elements:"* ]]
+[[ "$output" = *"10"* ]]
+[[ "$output" = *"Memory successfully freed and pointer set to NULL."* ]]
+}
+
+@test "test 3 - two elements" {
+run bash -c './demo6.exe <<EOF
+2
+5 15
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Enter 2 elements:"* ]]
+[[ "$output" = *"5 15"* ]]
+[[ "$output" = *"Memory successfully freed and pointer set to NULL."* ]]
+}
+
+@test "test 4 - negative numbers" {
+run bash -c './demo6.exe <<EOF
+3
+-1 -2 -3
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"-1 -2 -3"* ]]
+[[ "$output" = *"Memory successfully freed and pointer set to NULL."* ]]
+}
+
+@test "test 5 - mixed positive and negative" {
+run bash -c './demo6.exe <<EOF
+4
+-5 0 5 10
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"-5 0 5 10"* ]]
+[[ "$output" = *"Memory successfully freed and pointer set to NULL."* ]]
+}
+
+@test "test 6 - zero elements" {
+run bash -c './demo6.exe <<EOF
+0
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Enter 0 elements:"* ]]
+[[ "$output" = *"Memory successfully freed and pointer set to NULL."* ]]
+}
+
+@test "test 7 - large numbers" {
+run bash -c './demo6.exe <<EOF
+3
+1000 2000 3000
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"1000 2000 3000"* ]]
+[[ "$output" = *"Memory successfully freed and pointer set to NULL."* ]]
+}
+
+@test "test 8 - repeated numbers" {
+run bash -c './demo6.exe <<EOF
+4
+7 7 7 7
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"7 7 7 7"* ]]
+[[ "$output" = *"Memory successfully freed and pointer set to NULL."* ]]
+}
+
+@test "test 9 - descending order" {
+run bash -c './demo6.exe <<EOF
+5
+9 8 7 6 5
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"9 8 7 6 5"* ]]
+[[ "$output" = *"Memory successfully freed and pointer set to NULL."* ]]
+}
+
+@test "test 10 - random values" {
+run bash -c './demo6.exe <<EOF
+6
+3 14 1 9 2 8
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"3 14 1 9 2 8"* ]]
+[[ "$output" = *"Memory successfully freed and pointer set to NULL."* ]]
+}

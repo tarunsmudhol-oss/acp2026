@@ -1,0 +1,111 @@
+#!/usr/bin/env bats
+
+@test "test 1 - equal strings" {
+run bash -c './demo7.exe <<EOF
+hello
+hello
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Both strings are equal."* ]]
+}
+
+@test "test 2 - first greater" {
+run bash -c './demo7.exe <<EOF
+zebra
+apple
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"First string is lexicographically greater."* ]]
+}
+
+@test "test 3 - second greater" {
+run bash -c './demo7.exe <<EOF
+apple
+zebra
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Second string is lexicographically greater."* ]]
+}
+
+@test "test 4 - prefix case (shorter first)" {
+run bash -c './demo7.exe <<EOF
+app
+apple
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Second string is lexicographically greater."* ]]
+}
+
+@test "test 5 - prefix case (longer first)" {
+run bash -c './demo7.exe <<EOF
+apple
+app
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"First string is lexicographically greater."* ]]
+}
+
+@test "test 6 - case sensitivity" {
+run bash -c './demo7.exe <<EOF
+Apple
+apple
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Second string is lexicographically greater."* ]]
+}
+
+@test "test 7 - single character equal" {
+run bash -c './demo7.exe <<EOF
+a
+a
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Both strings are equal."* ]]
+}
+
+@test "test 8 - single character first greater" {
+run bash -c './demo7.exe <<EOF
+b
+a
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"First string is lexicographically greater."* ]]
+}
+
+@test "test 9 - numeric strings" {
+run bash -c './demo7.exe <<EOF
+123
+45
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"Second string is lexicographically greater."* ]]
+}
+
+@test "test 10 - special characters" {
+run bash -c './demo7.exe <<EOF
+@abc
+#abc
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" = *"First string is lexicographically greater."* ]]
+}
