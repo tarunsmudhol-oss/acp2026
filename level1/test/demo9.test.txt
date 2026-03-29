@@ -1,0 +1,148 @@
+#!/usr/bin/env bats
+
+@test "test 1 - basic input with 2 students" {
+run bash -c './demo9.exe <<EOF
+2
+101
+Tarun
+89
+102
+Prajwal
+100
+EOF'
+
+[[ "$output" = *"Data successfully written to file."* ]]
+[[ "$output" = *"101"* ]]
+[[ "$output" = *"Tarun"* ]]
+[[ "$output" = *"89.00"* ]]
+[[ "$output" = *"102"* ]]
+[[ "$output" = *"Prajwal"* ]]
+[[ "$output" = *"100.00"* ]]
+}
+
+@test "test 2 - single student input" {
+run bash -c './demo9.exe <<EOF
+1
+201
+Alice
+75
+EOF'
+
+[[ "$output" = *"201"* ]]
+[[ "$output" = *"Alice"* ]]
+[[ "$output" = *"75.00"* ]]
+}
+
+@test "test 3 - zero students" {
+run bash -c './demo9.exe <<EOF
+0
+EOF'
+
+[[ "$output" = *"Data successfully written to file."* ]]
+[[ "$output" = *"ID"* ]]
+}
+
+@test "test 4 - names with spaces" {
+run bash -c './demo9.exe <<EOF
+1
+301
+John Doe
+88
+EOF'
+
+[[ "$output" = *"John Doe"* ]]
+[[ "$output" = *"88.00"* ]]
+}
+
+@test "test 5 - multiple students mixed marks" {
+run bash -c './demo9.exe <<EOF
+3
+1
+A
+50
+2
+B
+60.5
+3
+C
+99.9
+EOF'
+
+[[ "$output" = *"A"* ]]
+[[ "$output" = *"50.00"* ]]
+[[ "$output" = *"B"* ]]
+[[ "$output" = *"60.50"* ]]
+[[ "$output" = *"C"* ]]
+[[ "$output" = *"99.90"* ]]
+}
+
+@test "test 6 - negative marks (edge case)" {
+run bash -c './demo9.exe <<EOF
+1
+401
+Test
+-10
+EOF'
+
+[[ "$output" = *"-10.00"* ]]
+}
+
+@test "test 7 - large ID values" {
+run bash -c './demo9.exe <<EOF
+1
+99999
+BigID
+85
+EOF'
+
+[[ "$output" = *"99999"* ]]
+[[ "$output" = *"BigID"* ]]
+}
+
+@test "test 8 - decimal marks precision" {
+run bash -c './demo9.exe <<EOF
+1
+501
+Decimal
+89.678
+EOF'
+
+[[ "$output" = *"89.68"* ]]
+}
+
+@test "test 9 - overwrite file check" {
+run bash -c './demo9.exe <<EOF
+1
+601
+First
+70
+EOF'
+
+run bash -c './demo9.exe <<EOF
+1
+602
+Second
+80
+EOF'
+
+[[ "$output" = *"602"* ]]
+[[ "$output" = *"Second"* ]]
+[[ "$output" != *"601"* ]]
+}
+
+@test "test 10 - multiple students order preserved" {
+run bash -c './demo9.exe <<EOF
+2
+701
+X
+10
+702
+Y
+20
+EOF'
+
+[[ "$output" = *"701"* ]]
+[[ "$output" = *"X"* ]]
+[[ "$output" = *"702"* ]]
+[[ "$output" = *"Y"* ]]
+}
