@@ -1,0 +1,111 @@
+#!/usr/bin/env bats
+
+@test "test 1 - normal strings" {
+run bash -c './demo8.exe <<EOF
+Hello
+World
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" == *"Concatenated string: HelloWorld"* ]]
+}
+
+@test "test 2 - strings with space" {
+run bash -c './demo8.exe <<EOF
+Hello 
+World
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" == *"Concatenated string: Hello World"* ]]
+}
+
+@test "test 3 - empty first string" {
+run bash -c './demo8.exe <<EOF
+
+World
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" == *"Concatenated string: World"* ]]
+}
+
+@test "test 4 - empty second string" {
+run bash -c './demo8.exe <<EOF
+Hello
+
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" == *"Concatenated string: Hello"* ]]
+}
+
+@test "test 5 - both strings empty" {
+run bash -c './demo8.exe <<EOF
+
+
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" == *"Concatenated string:"* ]]
+}
+
+@test "test 6 - numeric strings" {
+run bash -c './demo8.exe <<EOF
+123
+456
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" == *"Concatenated string: 123456"* ]]
+}
+
+@test "test 7 - special characters" {
+run bash -c './demo8.exe <<EOF
+@#$
+%^&
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" == *"Concatenated string: @#$%^&"* ]]
+}
+
+@test "test 8 - long strings" {
+run bash -c './demo8.exe <<EOF
+abcdefghij
+klmnopqrst
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" == *"Concatenated string: abcdefghijklmnopqrst"* ]]
+}
+
+@test "test 9 - mix of letters and numbers" {
+run bash -c './demo8.exe <<EOF
+abc123
+xyz789
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" == *"Concatenated string: abc123xyz789"* ]]
+}
+
+@test "test 10 - single character strings" {
+run bash -c './demo8.exe <<EOF
+A
+B
+EOF'
+
+echo "$output" >&3
+
+[[ "$output" == *"Concatenated string: AB"* ]]
+}
