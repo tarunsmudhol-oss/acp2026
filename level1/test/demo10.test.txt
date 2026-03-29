@@ -1,0 +1,127 @@
+@test "Test with 1 student" {
+  run bash -c "./demo10.exe <<EOF
+1
+101
+Tarun
+89
+EOF
+"
+  [[ "$output" == *"101"* ]]
+  [[ "$output" == *"Tarun"* ]]
+  [[ "$output" == *"89.00"* ]]
+}
+
+@test "Test with 2 students" {
+  run bash -c "./demo10.exe <<EOF
+2
+101
+Tarun
+89
+102
+Prajwal
+95
+EOF
+"
+  [[ "$output" == *"101"* ]]
+  [[ "$output" == *"102"* ]]
+  [[ "$output" == *"Prajwal"* ]]
+}
+
+@test "Test with 3 students" {
+  run bash -c "./demo10.exe <<EOF
+3
+1
+A
+10
+2
+B
+20
+3
+C
+30
+EOF
+"
+  [[ "$output" == *"A"* ]]
+  [[ "$output" == *"B"* ]]
+  [[ "$output" == *"C"* ]]
+}
+
+@test "Test zero students" {
+  run bash -c "./demo10.exe <<EOF
+0
+EOF
+"
+  [[ "$output" == *"Data read from binary file"* ]]
+}
+
+@test "Test high marks" {
+  run bash -c "./demo10.exe <<EOF
+1
+201
+Topper
+100
+EOF
+"
+  [[ "$output" == *"100.00"* ]]
+}
+
+@test "Test decimal marks" {
+  run bash -c "./demo10.exe <<EOF
+1
+202
+Decimal
+88.75
+EOF
+"
+  [[ "$output" == *"88.75"* ]]
+}
+
+@test "Test long name" {
+  run bash -c "./demo10.exe <<EOF
+1
+203
+VeryLongStudentName
+77
+EOF
+"
+  [[ "$output" == *"VeryLongStudentName"* ]]
+}
+
+@test "Test negative marks" {
+  run bash -c "./demo10.exe <<EOF
+1
+204
+Negative
+-10
+EOF
+"
+  [[ "$output" == *"-10.00"* ]]
+}
+
+@test "Test name with spaces" {
+  run bash -c "./demo10.exe <<EOF
+1
+205
+Tarun Mudhol
+91
+EOF
+"
+  [[ "$output" == *"Tarun Mudhol"* ]]
+}
+
+@test "Test file read/write consistency" {
+  run bash -c "./demo10.exe <<EOF
+2
+301
+X
+50
+302
+Y
+60
+EOF
+"
+  [[ "$output" == *"301"* ]]
+  [[ "$output" == *"302"* ]]
+  [[ "$output" == *"50.00"* ]]
+  [[ "$output" == *"60.00"* ]]
+}
