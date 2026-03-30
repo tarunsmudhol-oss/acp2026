@@ -1,0 +1,89 @@
+@test " 1 Units less than 50 (free scheme)" {
+  run ./act2.exe <<EOF
+40
+5
+EOF
+  [[ "$output" == *"Total Bill: Rup 0.00"* ]]
+  [[ "$output" == *"Eligible for free unit consumption scheme"* ]]
+}
+
+@test "2 Units exactly 50" {
+  run ./act2.exe <<EOF
+50
+2	
+EOF
+  [[ "$output" == *"Total Bill: Rup 100.00"* ]]
+  [[ "$output" == *"Normal billing applied"* ]]
+}
+
+@test " 3 Units between 50 and 100" {
+  run ./act2.exe <<EOF
+80
+3
+EOF
+  [[ "$output" == *"Total Bill: Rup 240.00"* ]]
+  [[ "$output" == *"Normal billing applied"* ]]
+}
+
+@test " 4 Units exactly 100" {
+  run ./act2.exe <<EOF
+100
+4
+EOF
+  [[ "$output" == *"Total Bill: Rup 400.00"* ]]
+  [[ "$output" == *"Normal billing applied"* ]]
+}
+
+@test "5 Units just above 100" {
+  run ./act2.exe <<EOF
+110
+2
+EOF
+  [[ "$output" == *"Total Bill: Rup 270.00"* ]]
+  [[ "$output" == *"High consumption alert! Extra charge applied"* ]]
+}
+
+@test "6 High units consumption" {
+  run ./act2.exe <<EOF
+150
+3
+EOF
+  [[ "$output" == *"Total Bill: Rup 700.00"* ]]
+  [[ "$output" == *"High consumption alert! Extra charge applied"* ]]
+}
+
+@test "7 Zero units" {
+  run ./act2.exe <<EOF
+0
+5
+EOF
+  [[ "$output" == *"Total Bill: Rup 0.00"* ]]
+  [[ "$output" == *"Eligible for free unit consumption scheme"* ]]
+}
+
+@test "8 Edge case 49 units" {
+  run ./act2.exe <<EOF
+49
+10
+EOF
+  [[ "$output" == *"Total Bill: Rup 0.00"* ]]
+  [[ "$output" == *"Eligible for free unit consumption scheme"* ]]
+}
+
+@test "9 Edge case 101 units" {
+  run ./act2.exe <<EOF
+101
+5
+EOF
+  [[ "$output" == *"Total Bill: Rup 510.00"* ]]
+  [[ "$output" == *"High consumption alert! Extra charge applied"* ]]
+}
+
+@test "10 Decimal rate check" {
+  run ./act2.exe <<EOF
+120
+2.5
+EOF
+  [[ "$output" == *"Total Bill: Rup 400.00"* ]]
+  [[ "$output" == *"High consumption alert! Extra charge applied"* ]]
+}
