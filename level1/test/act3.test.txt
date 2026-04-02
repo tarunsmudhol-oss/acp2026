@@ -1,0 +1,102 @@
+@test "Single consumer low units" {
+  run ./act3.exe <<EOF
+1
+101
+50
+EOF
+  [[ "$output" == *"Consumer ID: 101"* ]]
+  [[ "$output" == *"Bill Amount: Rup 75.00"* ]]
+}
+
+@test "Single consumer exactly 100 units" {
+  run ./act3.exe <<EOF
+1
+102
+100
+EOF
+  [[ "$output" == *"Bill Amount: Rup 150.00"* ]]
+}
+
+@test "Single consumer between 100 and 200" {
+  run ./act3.exe <<EOF
+1
+103
+150
+EOF
+  [[ "$output" == *"Bill Amount: Rup 275.00"* ]]
+}
+
+@test "Single consumer exactly 200 units" {
+  run ./act3.exe <<EOF
+1
+104
+200
+EOF
+  [[ "$output" == *"Bill Amount: Rup 400.00"* ]]
+}
+
+@test "Single consumer above 200 units" {
+  run ./act3.exe <<EOF
+1
+105
+250
+EOF
+  [[ "$output" == *"Bill Amount: Rup 600.00"* ]]
+}
+
+@test "Multiple consumers highest is last" {
+  run ./act3.exe <<EOF
+3
+101
+50
+102
+150
+103
+300
+EOF
+  [[ "$output" == *"Consumer ID: 103"* ]]
+}
+
+@test "Multiple consumers highest is first" {
+  run ./act3.exe <<EOF
+3
+201
+300
+202
+100
+203
+50
+EOF
+  [[ "$output" == *"Consumer ID: 201"* ]]
+}
+
+@test "All consumers same units" {
+  run ./act3.exe <<EOF
+3
+301
+100
+302
+100
+303
+100
+EOF
+  [[ "$output" == *"Consumer ID: 301"* ]]
+}
+
+@test "Zero units consumed" {
+  run ./act3.exe <<EOF
+1
+401
+0
+EOF
+  [[ "$output" == *"Bill Amount: Rup 0.00"* ]]
+}
+
+@test "Large number of units" {
+  run ./act3.exe <<EOF
+1
+501
+1000
+EOF
+  [[ "$output" == *"Bill Amount: Rup"* ]]
+}

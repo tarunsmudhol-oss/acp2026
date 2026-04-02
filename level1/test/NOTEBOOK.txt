@@ -1,0 +1,3 @@
+so i am planning to make whatsapp chat automation the core idea is that if any of the e-notes like pdf, docx or pptx are sent in the group of whatsapp the user will sent the file to my chat and it will store and chat bot will ask user by what name to save after that when ever user want the file user have to just send message for example (/'file name')
+
+so at the backend it should create and store the things by the user number so hence four if that user sent any thing it should store in the under that number only xand it should maintain every date record of data like time,date,no of file , payment id 
